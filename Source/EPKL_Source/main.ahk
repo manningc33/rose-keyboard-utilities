@@ -497,7 +497,7 @@ Process, Priority, , R  									; Real-time process priority (default is N for 
 SetWorkingDir,  %A_ScriptDir%   							; Should "ensure consistency" 	; eD WIP: Make a separate user working dir, so users can have their settings elsewhere?
 StringCaseSense, On 										; All string comparisons are case sensitive (AHK default is Off) 	; eD WIP: But InStr() is still caseless by def.?
 
-setPklInfo( "pklName", "EPiKaL Portable Keyboard Layout" )  				; EPKL Name
+setPklInfo( "name", "ROSE keyboard utilities" )
 setPklInfo( "pklVers", "1.4.1 EOL" )    									; EPKL Version
 setPklInfo( "pklHome", "https://github.com/DreymaR/BigBagKbdTrixPKL" )  	; URL - used to be http://pkl.sourceforge.net/
 setPklInfo( "pklHdrA", ";`r`n;;  " ) 										; A header used when generating EPKL files  	; eD WIP: Import Module
@@ -509,7 +509,17 @@ setPklInfo( "initStart", A_TickCount )  					; eD DEBUG: Time EPKL startup
 ;;  Global variables are now largely replaced by the get/set info framework, and initialized in the init fns
 ;global UIsel   											; Variable for UI selection (use Control names to see which one) 	; NOTE: Can't use an object variable for UI (yet)
 Gosub setUIGlobals  										; Set the globals needed for the settings UI (is this necessary?)
-initPklIni( A_Args[1] ) 									; Read settings from pkl.ini (now PklSet and PklLay). Get layout from command line parameter (legacy %1%), if any.
+
+setKeyInfo( "CurrNumOfDKs"  , 0  )  
+setKeyInfo( "CurrNameOfDK"  , "" )  
+setKeyInfo( "CurrBaseKey"   , 0  )  
+setKeyInfo( "PressedDKVs"   , "" )  
+pkl_CheckForDKs( 0 ) 				
+setPklInfo( "File_Settings", "Files\settings.ini" )
+setPklInfo( "File_Layout", "Files\layout.ini")
+setPklInfo("File_LayoutMap", "Files\layoutMap.ini")
+setPklInfo("File_Deadkeys", "Files\deadkeys.ini")
+
 initLayIni()    											; Read settings from Layout.ini and layout part files
 activatePKL()
 ;pklDebug( "Time since init start: " . A_TickCount - getPklInfo( "initStart" ) . " ms", 1 ) 	; eD DEBUG
